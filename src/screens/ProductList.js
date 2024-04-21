@@ -9,19 +9,20 @@ import {
   View,
   ActivityIndicator,
 } from 'react-native';
-import axios from 'react-native-axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useIsFocused} from '@react-navigation/native';
-import NetInfo from '@react-native-community/netinfo';
+import axios from 'react-native-axios'; // Import Axios for making HTTP requests
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage for local data storage
+import {useIsFocused} from '@react-navigation/native'; // Import useIsFocused hook to detect screen focus
+import NetInfo from '@react-native-community/netinfo'; // Import NetInfo for network connection status
 
 const ProductList = ({navigation}) => {
-  const focused = useIsFocused();
-  const [isInternetAvailable, setIsInternetAvailable] = useState(false);
-  const [isLoader, setIsLoader] = useState(false);
-  const [data, setData] = useState(null);
-  const [counts, setCounts] = useState({});
-  const [visibleStates, setVisibleStates] = useState([]);
+  const focused = useIsFocused(); // Detects if the screen is focused
+  const [isInternetAvailable, setIsInternetAvailable] = useState(false); // State to track internet connection
+  const [isLoader, setIsLoader] = useState(false); // State to track loading status
+  const [data, setData] = useState(null); // State to store fetched data
+  const [counts, setCounts] = useState({}); // State to manage item counts
+  const [visibleStates, setVisibleStates] = useState([]); // State to manage visibility of items
 
+  // Effect to listen to network connection changes
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener(state => {
       setIsInternetAvailable(state.isConnected);
@@ -33,35 +34,31 @@ const ProductList = ({navigation}) => {
     };
   }, []);
 
+  // Effect to fetch data from API or local storage based on network availability and screen focus
   useEffect(() => {
     const fetchData = async () => {
       setIsLoader(true);
       try {
-        // Check internet connection
         if (isInternetAvailable) {
-          // If internet is available, fetch data from API using Axios
+          // Fetch data from API if internet is available
           const response = await axios.get('https://dummyjson.com/products');
           const jsonData = response.data;
           setData(jsonData);
-          // Save data to local storage
-          await AsyncStorage.setItem('apiData', JSON.stringify(jsonData));
+          await AsyncStorage.setItem('apiData', JSON.stringify(jsonData)); // Save data to local storage
           setIsLoader(false);
         } else {
           // If no internet, try to fetch from local storage
           const localData = await AsyncStorage.getItem('apiData');
-          //  console.log('Local data:', localData);
           if (localData !== null) {
             setData(JSON.parse(localData));
             setIsLoader(false);
           } else {
             setIsLoader(false);
-
             console.log('No internet connection and no local data available.');
           }
         }
       } catch (error) {
         setIsLoader(false);
-
         console.error('Error fetching data:', error);
       }
     };
@@ -69,6 +66,7 @@ const ProductList = ({navigation}) => {
     fetchData();
   }, [focused, isInternetAvailable]);
 
+  // Function to increment item count
   const incrementCount = index => {
     setCounts(prevCounts => ({
       ...prevCounts,
@@ -76,6 +74,7 @@ const ProductList = ({navigation}) => {
     }));
   };
 
+  // Function to decrement item count
   const decrementCount = index => {
     if (counts[index] > 0) {
       setCounts(prevCounts => ({
@@ -84,6 +83,8 @@ const ProductList = ({navigation}) => {
       }));
     }
   };
+
+  // Function to toggle item visibility
   const toggleVisibility = index => {
     setVisibleStates(prevStates => {
       const updatedStates = [...prevStates];
@@ -91,6 +92,7 @@ const ProductList = ({navigation}) => {
       return updatedStates;
     });
   };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topHeader}>
@@ -104,6 +106,7 @@ const ProductList = ({navigation}) => {
         <View></View>
       </View>
       {isLoader ? (
+        // Show loading indicator while data is being fetched
         <ActivityIndicator
           size="large"
           color="#0000ff"
@@ -123,7 +126,6 @@ const ProductList = ({navigation}) => {
                   style={styles.heart}
                   source={require('../Image/love.png')}
                 />
-
                 <Image
                   resizeMode="cover"
                   style={styles.productImg}
@@ -137,23 +139,22 @@ const ProductList = ({navigation}) => {
                   Rating: {Math.floor(item.rating * 10) / 10}
                 </Text>
                 {!visibleStates[index] ? (
+                  // Show ADD button if item is not visible
                   <TouchableOpacity
                     onPress={() => toggleVisibility(index)}
                     style={styles.Button}>
                     <Text style={styles.txt}>ADD</Text>
                   </TouchableOpacity>
                 ) : (
+                  // Show +/- buttons for item count if item is visible
                   <View style={styles.buttonCard}>
                     <TouchableOpacity
-                    activeOpacity={0.5}
                       onPress={() => decrementCount(index)}
                       style={styles.minusButton}>
                       <Text style={styles.minusTxt}>-</Text>
                     </TouchableOpacity>
                     <Text style={styles.count}>{counts[index] || 0}</Text>
                     <TouchableOpacity
-                    activeOpacity={0.5}
-
                       onPress={() => incrementCount(index)}
                       style={styles.plusButton}>
                       <Text style={styles.txt}>+</Text>
@@ -171,7 +172,10 @@ const ProductList = ({navigation}) => {
 
 export default ProductList;
 
+// Styles
+
 const styles = StyleSheet.create({
+     // Your style definitions
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
