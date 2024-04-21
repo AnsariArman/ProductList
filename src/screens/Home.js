@@ -108,7 +108,7 @@ const Home = ({navigation}) => {
                 <Image
                   resizeMode="cover"
                   style={styles.TrendingIcon}
-                  source={{uri: item.thumbnail}}
+                  source={ item.thumbnail}
                 />
               </View>
             );

@@ -23,7 +23,7 @@ export const DummyShop = [
       stock: 111,
       brand: 'Bracelet',
       category: 'womens-watches',
-      thumbnail: 'https://cdn.dummyjson.com/product-images/70/thumbnail.jpg',
+      thumbnail: require('../Image/Watch.jpeg'),
       images: [
         'https://cdn.dummyjson.com/product-images/70/1.jpg',
         'https://cdn.dummyjson.com/product-images/70/2.jpg',
@@ -41,7 +41,7 @@ export const DummyShop = [
       stock: 150,
       brand: 'Ghazi Fabric',
       category: 'womens-dresses',
-      thumbnail: 'https://cdn.dummyjson.com/product-images/43/thumbnail.jpg',
+      thumbnail: require('../Image/Clothes.jpeg'),
       images: [
         'https://cdn.dummyjson.com/product-images/43/1.jpg',
         'https://cdn.dummyjson.com/product-images/43/2.jpg',

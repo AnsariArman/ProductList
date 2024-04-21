@@ -112,7 +112,9 @@ const ProductList = ({navigation}) => {
           color="#0000ff"
           style={{flex: 1, justifyContent: 'center', marginTop: -20}}
         />
-      ) : (
+      ) :
+      data !==null?
+      (
         <FlatList
           data={data?.products}
           numColumns={2}
@@ -165,7 +167,12 @@ const ProductList = ({navigation}) => {
             );
           }}
         />
-      )}
+      )
+    :
+    <View style={styles.found}>
+    <Text style={styles.foundTxt}>no data found</Text>
+    </View>
+    }
     </SafeAreaView>
   );
 };
@@ -285,4 +292,14 @@ const styles = StyleSheet.create({
     fontSize: 12,
     paddingHorizontal: 10,
   },
+  found:{
+    flex:1,
+   
+    justifyContent:"center",
+    alignItems:"center"
+  },
+  foundTxt:{
+    color:"#000000",
+    fontSize:30
+  }
 });
