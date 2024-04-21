@@ -45,7 +45,7 @@ const Home = ({navigation}) => {
             source={require('../Image/search.png')}
           />
           <TextInput
-            editable={false}
+            // editable={false}
             placeholder="What're you looking for?"
             placeholderTextColor="#747474"
             style={styles.textInput}
@@ -179,6 +179,7 @@ const styles = StyleSheet.create({
   textInput: {
     marginLeft: 5,
     fontWeight: '400',
+    color:"#000000"
   },
   shopAll: {
     flexDirection: 'row',
