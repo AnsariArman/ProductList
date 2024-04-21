@@ -10,14 +10,16 @@ import {
   Image,
   TextInput,
   FlatList,
+  ScrollView,
+  Dimensions,
 } from 'react-native';
 import { DummyShop, dummyTrending } from '../components/DummyData';
 
 
+const screenDimensions = Dimensions.get('screen').height;
 const Home = ({navigation}) => {
- 
   return (
-    <SafeAreaView style={styles.container}>
+    <ScrollView style={styles.container}>
       <StatusBar animated={true} backgroundColor="rgb(251,198,124)" />
  {/* Top Header Section */}
       <ImageBackground
@@ -35,7 +37,7 @@ const Home = ({navigation}) => {
           <Image style={styles.bell} source={require('../Image/bell.png')} />
         </View>
       </ImageBackground>
-      <View style={{flex: 0.7}}>
+      <View >
         {/* Search Section */}
         <View style={styles.TextInputView}>
           <Image
@@ -113,7 +115,7 @@ const Home = ({navigation}) => {
           }}
         />
       </View>
-    </SafeAreaView>
+      </ScrollView>
   );
 };
 
@@ -126,7 +128,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   imgBg: {
-    flex: 0.3,
+    height:screenDimensions/3.5
   },
   topHeader: {
     flexDirection: 'row',
@@ -225,7 +227,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 7,
     paddingVertical: 7,
     flexDirection: 'row',
-    justifyContent:"space-between"
+    justifyContent:"space-between",
+    marginBottom:20
   },
   TrendingIcon: {
     height: 170,
